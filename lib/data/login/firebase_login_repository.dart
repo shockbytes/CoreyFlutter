@@ -4,8 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseLoginRepository implements LoginRepository {
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn;
+  final FirebaseAuth _auth;
+
+  FirebaseLoginRepository(
+      this._googleSignIn,
+      this._auth);
 
   Future<CoreyUser> signIn() async {
     if (_auth.currentUser() == null) {

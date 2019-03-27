@@ -5,9 +5,11 @@ import 'package:Corey/ui/workout_widget.dart';
 import 'package:Corey/presentation/corey_icons.dart';
 import 'package:Corey/ui/body_widget.dart';
 import 'package:Corey/ui/schedule_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 void main() {
   runApp(MyApp());
@@ -42,7 +44,10 @@ enum OverflowState { SETTINGS, LOGOUT, DREAM_WEIGHT }
 class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 1;
   String _url = "";
-  LoginRepository loginRepository = FirebaseLoginRepository();
+
+  // Define dependencies here
+  LoginRepository _loginRepository =
+      FirebaseLoginRepository(GoogleSignIn(), FirebaseAuth.instance);
 
   final List<Widget> _children = [
     WorkoutWidget(),
@@ -67,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
 
-    loginRepository.signIn().then((CoreyUser user) {
+    _loginRepository.signIn().then((CoreyUser user) {
       print(user);
       setState(() {
         _url = user.photoUrl;
